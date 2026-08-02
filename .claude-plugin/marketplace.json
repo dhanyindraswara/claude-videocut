@@ -1,0 +1,13 @@
+{
+  "name": "videocut",
+  "owner": {
+    "name": "Dhany Indraswara"
+  },
+  "plugins": [
+    {
+      "name": "videocut",
+      "source": "./plugin",
+      "description": "Free, local AI video editor for Claude Code. Edit and export video entirely from chat using ffmpeg + Whisper — no cloud, no accounts, no credits."
+    }
+  ]
+}
