@@ -10,8 +10,23 @@ Usage:
 """
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
+
+BLOCKED_HINT = """
+Could not obtain the Whisper model '{model}'.
+
+The model downloads from huggingface.co on first use. If you are in a Claude Code
+cloud session, that host is blocked under the default 'Trusted' network level —
+set the environment's Network access to Custom and allow huggingface.co,
+*.huggingface.co and *.hf.co, then start a NEW session. See cloud/README.md.
+
+ffmpeg-only features (trim, join, crop, speed, overlay, music, export) do not
+need this and keep working.
+
+Underlying error: {err}
+""".strip()
 
 
 def fmt_srt(t: float) -> str:
@@ -26,8 +41,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("input")
     ap.add_argument("-o", "--outdir", default=".")
-    ap.add_argument("--model", default="small",
-                    help="tiny|base|small|medium|large-v3 (default: small)")
+    ap.add_argument("--model", default=os.environ.get("VIDEOCUT_WHISPER_MODEL", "small"),
+                    help="tiny|base|small|medium|large-v3, or a path to a local "
+                         "model dir (default: $VIDEOCUT_WHISPER_MODEL or small)")
     ap.add_argument("--language", default=None,
                     help="ISO code e.g. id, en; omit for auto-detect")
     args = ap.parse_args()
@@ -46,7 +62,11 @@ def main() -> int:
     outdir = Path(args.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
-    model = WhisperModel(args.model, device="auto", compute_type="auto")
+    try:
+        model = WhisperModel(args.model, device="auto", compute_type="auto")
+    except Exception as err:  # network block, bad name, corrupt cache
+        print(BLOCKED_HINT.format(model=args.model, err=err), file=sys.stderr)
+        return 2
     segments_iter, info = model.transcribe(
         str(src),
         language=args.language,

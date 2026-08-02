@@ -17,6 +17,17 @@ Everything is non-destructive: cuts live in a reviewable JSON edit plan, sources
 never touched, and Claude verifies every render with ffprobe + preview frames before
 calling it done.
 
+## No local install: run it in Claude Code on the web
+
+You can skip your machine entirely and edit from a browser chat. It takes a
+one-time environment change — allow `huggingface.co` and paste a setup script —
+after which every session starts with ffmpeg and Whisper ready.
+
+**→ [`cloud/README.md`](./cloud/README.md)**
+
+Worth knowing before you commit to it: cloud sessions are ephemeral, uploads are
+the slow part rather than the render, and transcription runs on CPU.
+
 ## Requirements
 
 - [ffmpeg](https://ffmpeg.org/download.html) (`brew install ffmpeg` / `sudo apt install ffmpeg` / `winget install ffmpeg`)

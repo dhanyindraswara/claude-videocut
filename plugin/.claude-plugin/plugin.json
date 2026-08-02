@@ -1,6 +1,6 @@
 {
   "name": "videocut",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Free, local AI video editor for Claude Code. Transcribe, smart-cut filler words and silences, burn captions, mix music, and export — all with ffmpeg + Whisper running on your own machine.",
   "author": {
     "name": "Dhany Indraswara"
