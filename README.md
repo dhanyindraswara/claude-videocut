@@ -49,12 +49,16 @@ Start a **new** Claude Code conversation and just say it like a human:
 > bro kerja edit video
 
 VideoCut wakes up, checks that `ffmpeg` and Python are ready, and asks you to drop
-the video plus what you want done. Then attach the file (drag it into the chat or
-paste the path) and answer. Other openers that work the same way: *bro edit video*,
+the video plus a numbered preset. Then attach the file (drag it into the chat or
+paste the path) and pick. Other openers that work the same way: *bro edit video*,
 *gas edit video*, *tolong edit video*, *potong video*, *bikin caption*,
-*let's edit a video*.
+*let's edit a video*, *edit my video*.
 
-Prefer something deterministic? `/videocut:edit-video` does the same thing.
+This is deterministic, not a guess: a bundled `UserPromptSubmit` hook
+(`plugin/hooks/videocut_trigger.py`) recognises those openers and tells Claude to
+load the skill. Every pattern requires you to name the medium — *video*, *klip*,
+*footage* — so ordinary prompts are never hijacked. `/videocut:edit-video` does
+the same thing if you prefer a slash command.
 
 Or skip the back-and-forth and say the whole thing at once:
 
@@ -68,6 +72,10 @@ Or skip the back-and-forth and say the whole thing at once:
 plugin/
   .claude-plugin/plugin.json      plugin manifest
   skills/                         7 skills Claude loads on demand
+  commands/edit-video.md          /videocut:edit-video
+  hooks/
+    hooks.json                    UserPromptSubmit registration
+    videocut_trigger.py           plain-language openers → load the skill
   scripts/
     transcribe.py                 faster-whisper → transcript JSON + SRT
     smart_cut.py                  plan (fillers/silences → edit plan) + apply (render)
