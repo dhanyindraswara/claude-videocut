@@ -33,9 +33,20 @@ metadata request that succeeds and a download that fails.
 
 ## 2. Add the setup script
 
-Paste [`setup.sh`](./setup.sh) into the **Setup script** field of the same
-dialog. It installs `ffmpeg`, installs `faster-whisper`, and pre-downloads the
-model.
+Paste this into the **Setup script** field of the same dialog — three lines,
+which matters if you are doing this on a phone:
+
+```bash
+#!/bin/bash
+curl -fsSL https://raw.githubusercontent.com/dhanyindraswara/claude-videocut/main/cloud/setup.sh | bash || true
+exit 0
+```
+
+`raw.githubusercontent.com` is on the default Trusted allowlist, so this fetch
+works regardless of your custom domain list. It pulls [`setup.sh`](./setup.sh),
+which installs `ffmpeg`, installs `faster-whisper`, and pre-downloads the model.
+Paste the full file instead if you would rather pin the contents than track
+`main`.
 
 The result is snapshotted and cached, so the script runs *once* — later sessions
 start with everything already on disk. The cache rebuilds when you change the
