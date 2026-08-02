@@ -41,6 +41,13 @@ except Exception as exc:
     print("[videocut] add huggingface.co to the environment's allowed domains")
 PY
 
+# --- the plugin itself --------------------------------------------------------
+# A fresh cloud VM has no plugins; install at user scope so the "bro kerja edit
+# video" trigger, skills, and scripts exist. ~/.claude is part of the cached
+# environment snapshot, so this too runs only once.
+claude plugin marketplace add https://github.com/dhanyindraswara/claude-videocut.git 2>/dev/null || true
+claude plugin install videocut@videocut 2>/dev/null || true
+
 # --- report what the session actually got ------------------------------------
 echo "[videocut] ffmpeg:  $(ffmpeg -version 2>/dev/null | head -1 || echo 'MISSING')"
 echo "[videocut] python:  $(python3 --version 2>/dev/null || echo 'MISSING')"
