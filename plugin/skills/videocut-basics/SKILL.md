@@ -1,6 +1,6 @@
 ---
 name: videocut-basics
-description: MANDATORY prerequisite for any VideoCut work. Invoke before any other videocut skill and before running ffmpeg/whisper on the user's media. Covers project layout, the non-destructive edit-plan workflow, dependency checks, and how to verify and show results to the user. Also invoke whenever the user wants to edit, cut, caption, or export a video and no other tool is specified.
+description: MANDATORY prerequisite for any VideoCut work. Invoke before any other videocut skill and before running ffmpeg/whisper on the user's media. Covers project layout, the non-destructive edit-plan workflow, dependency checks, and how to verify and show results to the user. Also invoke whenever the user wants to edit, cut, caption, or export a video and no other tool is specified — including bare casual openers with no file attached yet, in Indonesian or English: "bro kerja edit video", "bro edit video", "kerja edit video", "gas edit video", "ayo edit video", "tolong edit video", "mau edit video", "potong video", "bikin caption", "edit my video", "let's edit a video". Treat any such opener as a cold start (section 0) rather than asking what the user means.
 ---
 
 # VideoCut Basics
@@ -8,6 +8,29 @@ description: MANDATORY prerequisite for any VideoCut work. Invoke before any oth
 VideoCut is a fully local video editor. There is no server and no UI: **you** (Claude)
 are the editor, `ffmpeg` is the render engine, and `faster-whisper` is the ear.
 Everything happens on the user's machine and is free.
+
+## 0. Cold start (user opened with a bare phrase, no video yet)
+
+When the trigger is just an opener — "bro kerja edit video" and friends — the user
+has not attached anything yet. Do **not** reply "what do you want me to do?".
+Instead, in one short turn:
+
+1. Run the dependency check in section 1 immediately (it costs nothing and tells
+   the user up front if `ffmpeg` or Python is missing).
+2. Report readiness in one line: what is installed, what is missing.
+3. Ask for exactly two things and stop:
+   - the video — drag the file into the chat, or paste its path
+   - what they want done — or offer the common presets so they can just pick a number:
+     1. Bersihin — buang filler word (*um, uh, eh, anu*) + jeda panjang
+     2. Caption — subtitle biasa, atau word-pop ala TikTok/Reels
+     3. Vertikal — crop 16:9 → 9:16 buat Reels/TikTok/Shorts
+     4. Musik — tambah backsound, auto-duck di bawah suara
+     5. Export — YouTube / Reels / WhatsApp / GIF / MP3
+     6. Paket lengkap — bersihin + caption + export
+
+Match the user's language and register: if they opened casually in Indonesian,
+answer casually in Indonesian. Once the video arrives, go straight to section 2
+(project layout) — do not re-ask for confirmation of things they already said.
 
 ## 1. Dependency check (run once per session, before first edit)
 

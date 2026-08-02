@@ -39,7 +39,24 @@ claude plugin marketplace add /path/to/claude-videocut
 claude plugin install videocut@videocut
 ```
 
-Then start a **new** Claude Code conversation and try:
+Install is **once per machine** — it is saved in your user settings, so you never
+have to run those two commands again.
+
+## Usage
+
+Start a **new** Claude Code conversation and just say it like a human:
+
+> bro kerja edit video
+
+VideoCut wakes up, checks that `ffmpeg` and Python are ready, and asks you to drop
+the video plus what you want done. Then attach the file (drag it into the chat or
+paste the path) and answer. Other openers that work the same way: *bro edit video*,
+*gas edit video*, *tolong edit video*, *potong video*, *bikin caption*,
+*let's edit a video*.
+
+Prefer something deterministic? `/videocut:edit-video` does the same thing.
+
+Or skip the back-and-forth and say the whole thing at once:
 
 > Edit ~/Videos/talk.mp4: remove the filler words and long pauses, add captions,
 > and export it for YouTube.
